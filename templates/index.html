@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css')}}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<title>Sign in & Sign up Form</title>
+</head>
+
+<body>
+	<div class="container">
+		<div class="forms-container">
+			<div class="signin-signup">
+				<form action="/login" class="sign-in-form" method="POST">
+					<h2 class="title">Sign in</h2>
+					<div class="input-field">
+						<i class="fas fa-user"></i>
+						<input type="text" placeholder="Username" name="username" />
+					</div>
+					<div class="input-field">
+						<i class="fas fa-lock"></i>
+						<input type="password" placeholder="Password" name="password" />
+					</div>
+					<input type="submit" value="Login" class="btn solid" style="background-color: #fd7e14;" />
+					<p class="social-text">Or Sign in with social platforms</p>
+					<div class="social-media">
+						<a href="#" class="social-icon">
+							<i class="fab fa-facebook-f"></i>
+						</a>
+						<a href="#" class="social-icon">
+							<i class="fab fa-google"></i>
+						</a>
+						<a href="#" class="social-icon">
+							<i class="fab fa-linkedin-in"></i>
+						</a>
+					</div>
+				</form>
+				<form action="/submit_registeration_form" class="sign-up-form" method="POST">
+					<h2 class="title">Sign up</h2>
+					<div class="input-field">
+						<i class="fas fa-user"></i>
+						<input type="text" placeholder="Username" name="username" />
+					</div>
+					<div class="input-field">
+						<i class="fas fa-envelope"></i>
+						<input type="email" placeholder="Email" name="email" />
+					</div>
+					<div class="input-field">
+						<i class="fas fa-lock"></i>
+						<input type="password" placeholder="Password" name="password" />
+					</div>
+					<input type="submit" class="btn" value="Sign up" style="background-color: #fd7e14;" />
+					<p class="social-text">Or Sign up with social platforms</p>
+					<div class="social-media">
+						<a href="#" class="social-icon">
+							<i class="fab fa-facebook-f"></i>
+						</a>
+						<a href="#" class="social-icon">
+							<i class="fab fa-google"></i>
+						</a>
+						<a href="#" class="social-icon">
+							<i class="fab fa-linkedin-in"></i>
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="panels-container">
+			<div class="panel left-panel">
+				<div class="content">
+					<h3>New to our site ?</h3>
+					<p>
+						Discover a world of products! Join us and explore a
+          collection of products with best quality.
+					</p>
+					<button class="btn transparent" id="sign-up-btn">
+						Sign up
+					</button>
+				</div>
+				<img  src="https://i.ibb.co/6HXL6q1/Privacy-policy-rafiki.png" class="image" alt="" />
+			</div>
+			<div class="panel right-panel">
+				<div class="content">
+					<h3>One of Our Valued Customer</h3>
+					<p>
+						Thank you for being choosing our site. Your presence enriches our
+          shared experiences. Let's continue this journey together!
+					</p>
+					<button class="btn transparent" id="sign-in-btn">
+						Sign in
+					</button>
+				</div>
+				<img src="https://i.ibb.co/nP8H853/Mobile-login-rafiki.png"  class="image" alt="" />
+			</div>
+		</div>
+        <div class="row">
+            <!-- <div class="col-12 text-center">
+                <button type="button" class="btn btn-success m-1" data-bs-toggle="modal" data-bs-target="#statusSuccessModal">Success Modal</button>
+                <button type="button" class="btn btn-danger m-1" data-bs-toggle="modal" data-bs-target="#statusErrorsModal">Error Modal</button> 
+            </div> -->
+            <div class="d-flex justify-content-start align-items-center flex-column flex-md-row flex-wrap mt-5">
+                <div class="box00 m-3" style="background: rgba(236,239,243,.2);box-shadow:0.67px 3.67px 8px #186edf3b;"></div>
+                <div class="box00 m-3" style="background: rgba(236,239,243,.35);box-shadow: 0 0 10px #0000001a;;"></div>
+                <div class="box00 m-3" style="background: rgb(245 246 248);box-shadow: -2px -3px 56px #186edf17, 2px 4px 14px #186edf14;"></div>
+                <div class="box00 m-3" style="background: rgba(39,73,125,.14);box-shadow: 0 0 10px 5px rgb(0 0 0 / 15%);"></div>
+                <div class="box00 m-3" style="background: rgba(255,255,255,1);box-shadow: 0 6px 65px #27497d17;"></div>
+            </div>
+    
+    
+    
+            <div class="modal fade" id="statusErrorsModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"> 
+                <div class="modal-dialog modal-dialog-centered modal-sm" role="document"> 
+                    <div class="modal-content"> 
+                        <div class="modal-body text-center p-lg-4"> 
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+                                <circle class="path circle" fill="none" stroke="#db3646" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" /> 
+                                <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3" />
+                                <line class="path line" fill="none" stroke="#db3646" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" X2="34.4" y2="92.2" /> 
+                            </svg> 
+                            <h4 class="text-danger mt-3">Invalid email!</h4> 
+                            <p class="mt-3">This email is already registered, please login.</p>
+                            <button type="button" class="btn btn-sm mt-3 btn-danger" data-bs-dismiss="modal">Ok</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+            <div class="modal fade" id="statusSuccessModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false"> 
+                <div class="modal-dialog modal-dialog-centered modal-sm" role="document"> 
+                    <div class="modal-content"> 
+                        <div class="modal-body text-center p-lg-4"> 
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+                                <circle class="path circle" fill="none" stroke="#198754" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1" />
+                                <polyline class="path check" fill="none" stroke="#198754" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " /> 
+                            </svg> 
+                            <h4 class="text-success mt-3">Oh Yeah!</h4> 
+                            <p class="mt-3">You have successfully registered and logged in.</p>
+                            <button type="button" class="btn btn-sm mt-3 btn-success" data-bs-dismiss="modal">Ok</button> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div>
+        </div>
+	</div>
+
+	<script>
+        const sign_in_btn = document.querySelector("#sign-in-btn");
+        const sign_up_btn = document.querySelector("#sign-up-btn");
+        const container = document.querySelector(".container");
+        const urlParams = new URLSearchParams(window.location.search);
+        const success = urlParams.get('success');
+
+        sign_up_btn.addEventListener("click", () => {
+            container.classList.add("sign-up-mode");
+        });
+
+        sign_in_btn.addEventListener("click", () => {
+            container.classList.remove("sign-up-mode");
+        });
+        
+       if(success){
+        // alert(success);
+        //document.getElementById('statusSuccessModal').style.display = "block";
+        $('#statusSuccessModal').modal('show');
+        setTimeout(function(){
+            //document.getElementById('statusSuccessModal').style.display = "none";
+            $('statusSuccessModal').modal('hide');
+        }, 3000);
+       }
+    </script>
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

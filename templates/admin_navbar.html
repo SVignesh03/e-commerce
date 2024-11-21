@@ -1,0 +1,73 @@
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarCollapse"
+      aria-controls="navbarCollapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto sidenav" id="navAccordion">
+        <li class="nav-item active">
+          <h3 style="color: #ffffff;">Welcome Admin!</h3>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin_dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link nav-link-collapse"
+            href="#"
+            id="hasSubItems"
+            data-toggle="collapse"
+            data-target="#collapseSubItems2"
+            aria-controls="collapseSubItems2"
+            aria-expanded="false"
+          >Admin</a>
+          <ul class="nav-second-level collapse" id="collapseSubItems2" data-parent="#navAccordion">
+            <li class="nav-item">
+              <a class="nav-link" href="/promote_admin">
+                <span class="nav-link-text">Add Admin</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/remove_admin">
+                <span class="nav-link-text">Remove Admin</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link nav-link-collapse"
+            href="#"
+            id="hasSubItems"
+            data-toggle="collapse"
+            data-target="#collapseSubItems4"
+            aria-controls="collapseSubItems4"
+            aria-expanded="false"
+          >Products</a>
+          <ul class="nav-second-level collapse" id="collapseSubItems4" data-parent="#navAccordion">
+            <li class="nav-item">
+              <a class="nav-link" href="/add_product">
+                <span class="nav-link-text">Add Product</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/add_category">
+                <span class="nav-link-text">Add Category</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
