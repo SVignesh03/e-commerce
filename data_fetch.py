@@ -1,42 +1,125 @@
 from db import conn
 
+# Function to fetch sales data
 def fetch_sales_data():
-    cursor = conn.cursor()
-    cursor.execute("SELECT order_date, total_amount FROM tbl_orders")
-    rows = cursor.fetchall()
-    sales_data = [{'date': row[0].strftime('%Y-%m-%d'), 'amount': row[1]} for row in rows]
-    cursor.close()
+    # Access the 'tbl_orders' collection
+    orders_collection = conn["tbl_orders"]
+    # Aggregate to fetch order_date and total_amount
+    rows = orders_collection.find({}, {"order_date": 1, "total_amount": 1})
+    # Format the output
+    sales_data = [{'date': row['order_date'].strftime('%Y-%m-%d'), 'amount': row['total_amount']} for row in rows]
     return sales_data
 
-# Function to fetch product data from the database
+# Function to fetch product data
 def fetch_product_data():
-    cursor = conn.cursor()
-    cursor.execute("SELECT p.name, SUM(c.quantity) FROM tbl_products p JOIN tbl_cart c ON p.id = c.product_id GROUP BY p.name")
-    rows = cursor.fetchall()
-    product_data = [{'name': row[0], 'quantity': row[1]} for row in rows]
-    cursor.close()
+    # Access the collections
+    products_collection = conn["tbl_products"]
+    cart_collection = conn["tbl_cart"]
+
+    # Aggregate to get product name and sum of quantities
+    pipeline = [
+        {
+            "$lookup": {
+                "from": "tbl_cart",  # Name of the collection to join
+                "localField": "id",  # Field in tbl_products
+                "foreignField": "product_id",  # Field in tbl_cart
+                "as": "cart_items"  # Name for the joined results
+            }
+        },
+        {
+            "$unwind": "$cart_items"  # Deconstruct the array
+        },
+        {
+            "$group": {
+                "_id": "$name",
+                "quantity": {"$sum": "$cart_items.quantity"}
+            }
+        },
+        {
+            "$project": {
+                "name": "$_id",
+                "quantity": 1,
+                "_id": 0
+            }
+        }
+    ]
+    rows = list(products_collection.aggregate(pipeline))
+    product_data = [{'name': row['name'], 'quantity': row['quantity']} for row in rows]
     return product_data
 
-# Function to fetch user data from the database
+# Function to fetch user data
 def fetch_user_data():
-    cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(DISTINCT user_id) FROM tbl_orders")
-    total_users_count = cursor.fetchone()[0]
-    cursor.execute("SELECT COUNT(*) FROM (SELECT user_id FROM tbl_orders GROUP BY user_id HAVING COUNT(*) > 1) AS repeated_users")
-    repeated_users_count = cursor.fetchone()[0]
-    cursor.close()
-    return {'repeated_users_count': repeated_users_count, 'total_users_count': total_users_count}
+    # Access the 'tbl_orders' collection
+    orders_collection = conn["tbl_orders"]
 
+    # Fetch distinct user counts
+    total_users_count = orders_collection.distinct("user_id")
+    total_users_count = len(total_users_count)
+
+    # Fetch repeated user counts
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$user_id",
+                "order_count": {"$sum": 1}
+            }
+        },
+        {
+            "$match": {"order_count": {"$gt": 1}}
+        }
+    ]
+    repeated_users = list(orders_collection.aggregate(pipeline))
+    repeated_users_count = len(repeated_users)
+
+    return {
+        'repeated_users_count': repeated_users_count,
+        'total_users_count': total_users_count
+    }
+
+# Function to add a category to the database
 def add_category_db(name):
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO tbl_categories (name) VALUES (%s)", (name,))
-    conn.commit()
-    cursor.close()
+    # Access the 'tbl_categories' collection
+    categories_collection = conn["tbl_categories"]
+    # Insert the category
+    categories_collection.insert_one({"name": name})
 
+# Function to fetch cart items for a user
 def fetch_cart_items(username):
-    cursor = conn.cursor()
-    cursor.execute("""SELECT p.name, p.image_url, p.price, c.quantity FROM tbl_products p JOIN tbl_cart c ON p.id = c.product_id JOIN tbl_users u ON c.user_id = u.id WHERE u.user_name = %s """, (username,))
-    rows = cursor.fetchall()
-    cursor.close()
-    cart_items = [{'name': row[0], 'image_url': row[1], 'price': row[2], 'quantity': row[3]} for row in rows]
+    # Access the collections
+    users_collection = conn["tbl_users"]
+    cart_collection = conn["tbl_cart"]
+    products_collection = conn["tbl_products"]
+
+    # Fetch user by username
+    user = users_collection.find_one({"user_name": username})
+    if not user:
+        return []  # User not found
+
+    # Fetch cart items for the user
+    pipeline = [
+        {
+            "$match": {"user_id": user["_id"]}
+        },
+        {
+            "$lookup": {
+                "from": "tbl_products",
+                "localField": "product_id",
+                "foreignField": "id",
+                "as": "product_details"
+            }
+        },
+        {
+            "$unwind": "$product_details"
+        },
+        {
+            "$project": {
+                "name": "$product_details.name",
+                "image_url": "$product_details.image_url",
+                "price": "$product_details.price",
+                "quantity": "$quantity",
+                "_id": 0
+            }
+        }
+    ]
+    cart_items = list(cart_collection.aggregate(pipeline))
     return cart_items
